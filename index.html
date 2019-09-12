@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+        // 这是一个JavaScript变量，用来定义CSS，图片， 资源和js的使用的目录。它是一段JavaScript代码，并需要被放置在 script 标签内。 它必须在加载mxClient.js之前，而且不应该斜线。
+        mxBasePath = 'src';
+    </script>
+
+    <!--这是mxGraph库的路径。如果HTML文件在本地执行， 路径可能是本地计算机路径或公共互联网的路径。如果HTML页面是从Web服务器上下载，这路径通常是一个公共的因特网路径。-->
+    <script type="text/javascript" src="src/js/mxClient.js"></script>
+
+    <script type="text/javascript">
+        // Program starts here. Creates a sample graph in the
+        // DOM node with the specified ID. This function is invoked
+        // from the onLoad event handler of the document (see below).
+        function main(container)
+        {
+            // Checks if the browser is supported
+            if (!mxClient.isBrowserSupported())
+            {
+                // Displays an error message if the browser is not supported.
+                mxUtils.error('Browser is not supported!', 200, false);
+            }
+            else
+            {
+                // Disables the built-in context menu
+                mxEvent.disableContextMenu(container);
+
+                // Creates the graph inside the given container
+                var graph = new mxGraph(container);
+
+                // Enables rubberband selection
+                new mxRubberband(graph);
+
+                // Gets the default parent for inserting new cells. This
+                // is normally the first child of the root (ie. layer 0).
+                var parent = graph.getDefaultParent();
+
+                // Adds cells to the model in a single step
+                graph.getModel().beginUpdate();
+
+                //通过xml作图
+                var xml = mxUtils.getTextContent(document.getElementById('xmlDiv'));
+                var xmlDocument = mxUtils.parseXml(xml);
+
+                var decoder = new mxCodec(xmlDocument);
+                var node = xmlDocument.documentElement;
+                graph.centerZoom = false;
+                graph.setTooltips(false);
+                graph.setEnabled(false);
+                var style = graph.getStylesheet().getDefaultEdgeStyle();
+                style[mxConstants.STYLE_EDGE] = mxEdgeStyle.ElbowConnector;
+
+                graph.panningHandler.useLeftButtonForPanning = true;
+                graph.panningHandler.ignoreCell = true;
+                graph.container.style.cursor = 'move';
+                graph.setPanning(true);
+                graph.resizeContainer = true;
+                decoder.decode(node, graph.getModel());
+
+
+
+
+                try
+                {
+                    var v1 = graph.insertVertex(parent, null, 'Hello,', 20, 20, 80, 30);
+                    var v2 = graph.insertVertex(parent, null, 'World!', 200, 150, 80, 30);
+                    var e1 = graph.insertEdge(parent, null, '', v1, v2);
+                }
+                finally
+                {
+                    // Updates the display
+                    graph.getModel().endUpdate();
+                }
+            }
+        };
+    </script>
+</head>
+<body onload="main(document.getElementById('graphContainer'))">
+    <div id="graphContainer"
+         style="position:relative;overflow:hidden;width:1001px;height:601px;background:url('editors/images/grid.gif');cursor:default;">
+    </div>
+    <div style="display: none;" id="xmlDiv">&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id="0"/&gt;&lt;mxCell id="1" parent="0"/&gt;&lt;mxCell id="2" vertex="1" parent="1" value="Interval 1"&gt;&lt;mxGeometry x="380" y="20" width="140" height="30" as="geometry"/&gt;&lt;/mxCell&gt;&lt;mxCell id="3" vertex="1" parent="1" value="Interval 2"&gt;&lt;mxGeometry x="200" y="80" width="380" height="30" as="geometry"/&gt;&lt;/mxCell&gt;&lt;mxCell id="4" vertex="1" parent="1" value="Interval 3"&gt;&lt;mxGeometry x="40" y="140" width="260" height="30" as="geometry"/&gt;&lt;/mxCell&gt;&lt;mxCell id="5" vertex="1" parent="1" value="Interval 4"&gt;&lt;mxGeometry x="120" y="200" width="240" height="30" as="geometry"/&gt;&lt;/mxCell&gt;&lt;mxCell id="6" vertex="1" parent="1" value="Interval 5"&gt;&lt;mxGeometry x="420" y="260" width="80" height="30" as="geometry"/&gt;&lt;/mxCell&gt;&lt;mxCell id="7" edge="1" source="2" target="3" parent="1" value="Transfer1"&gt;&lt;mxGeometry as="geometry"&gt;&lt;Array as="points"&gt;&lt;Object x="420" y="60"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;mxCell id="8" edge="1" source="2" target="6" parent="1" value="Transfer2"&gt;&lt;mxGeometry as="geometry" relative="1" y="0"&gt;&lt;Array as="points"&gt;&lt;Object x="600" y="60"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;mxCell id="9" edge="1" source="3" target="4" parent="1" value="Transfer3"&gt;&lt;mxGeometry as="geometry"&gt;&lt;Array as="points"&gt;&lt;Object x="260" y="120"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;mxCell id="10" edge="1" source="4" target="5" parent="1" value="Transfer4"&gt;&lt;mxGeometry as="geometry"&gt;&lt;Array as="points"&gt;&lt;Object x="200" y="180"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;mxCell id="11" edge="1" source="4" target="6" parent="1" value="Transfer5"&gt;&lt;mxGeometry as="geometry" relative="1" y="-10"&gt;&lt;Array as="points"&gt;&lt;Object x="460" y="155"/&gt;&lt;/Array&gt;&lt;/mxGeometry&gt;&lt;/mxCell&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;</div>
+</body>
+</html>
