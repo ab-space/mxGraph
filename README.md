@@ -11,6 +11,9 @@ mxGraph支持IE 11，Chrome 43 +，Firefox 45 +，Safari 9.1.x，10.1.x和11.0.x
 mxGraph不使用第三方软件，它不需要插件，几乎可以集成到任何框架中。
 
 ### 地址
+
+[mxGraph 入门](https://segmentfault.com/a/1190000018510996)
+
 [mxGraph gitHub](https://github.com/jgraph/mxgraph)
 
 [mxGraph 翻译为中文 gitHub](https://github.com/SunInfoFE/mxGraph_User_Manual_CN)
